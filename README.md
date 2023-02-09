@@ -17,7 +17,7 @@ MySQL port is default 3306.
 Server: server side as RESTful architectural style. 
 As a default, it is listening at http://localhost:8080/
 
-#RESTful APIs Implemented are 
+#RESTful APIs Implemented are as follows:
 
 GET 
 PUT
