@@ -1,11 +1,7 @@
 name: test workflow
 
-<<<<<<< HEAD
-on: [pull_request, push]
-=======
 
 on: [pull_request]
->>>>>>> adcb62a3907d557d745e28e4489500d9441cdecf
 
 
 jobs:
