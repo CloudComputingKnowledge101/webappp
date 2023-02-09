@@ -2,6 +2,7 @@ package com.example.demo.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -26,19 +27,25 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
+	/*@Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/v1/user", "/healthz");
-    }
+        return (web) -> web.ignoring().requestMatchers(HttpMethod.POST, "/v1/user")
+        								.requestMatchers(HttpMethod.GET, "/healthz")
+        								.requestMatchers(HttpMethod.GET, "/v1/product/*");
+    }*/
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-		http
-        .authorizeHttpRequests((authz) -> authz
-            .anyRequest().authenticated()
-        )
-        .httpBasic();
+		
+		http.authorizeHttpRequests()
+		.requestMatchers(HttpMethod.POST, "/v1/user").permitAll()
+		.requestMatchers(HttpMethod.GET, "/healthz").permitAll()
+		.requestMatchers(HttpMethod.GET, "/v1/product/*").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .httpBasic()
+        .and()
+        .csrf().disable();
 		
 		return http.build();
 	}

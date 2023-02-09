@@ -5,7 +5,9 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Base64Utils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +20,6 @@ import com.example.demo.daos.SignupForm;
 import com.example.demo.models.CloudComputingDBUser;
 import com.example.demo.services.CloudComputingUserService;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping("/v1/user")
 public class UserController {
@@ -28,77 +28,103 @@ public class UserController {
 
 	@Autowired
 	private CloudComputingUserService cloudComputingUserService;
-
+	
 	@GetMapping("{id}")
-	public ResponseEntity<String> read(@PathVariable Long id, HttpServletRequest request) {
-
-		if (request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Basic ")) {
-
-			return new ResponseEntity<String>("You need to login first!", HttpStatus.UNAUTHORIZED);
+	public ResponseEntity<CloudComputingDBUser> read(@PathVariable Long id) {
+		
+		System.out.println("INSIDE");
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(auth == null) {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-
-		String encodedValue = request.getHeader("Authorization").replace("Basic ", "");
-		String decodedValue = new String(Base64Utils.decodeFromString(encodedValue));
-
-		String username = decodedValue.substring(0, decodedValue.lastIndexOf(":"));
-		CloudComputingDBUser user = cloudComputingUserService.getUser(username);
-
-		if (user == null || !user.getId().equals(id)) {
-
-			return new ResponseEntity<String>("You CAN'T GET details of other users!", HttpStatus.FORBIDDEN);
+		
+		Object principal = auth.getPrincipal();
+		CloudComputingDBUser dbUser = null;
+		
+		if (principal instanceof UserDetails) {
+			
+			String username = ((UserDetails) principal).getUsername();
+			dbUser = cloudComputingUserService.getUser(username);
+			
+			if (dbUser == null) {
+				
+				return ResponseEntity.notFound().build();
+				
+			}else if( !dbUser.getUser_id().equals(id) ) {
+				
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			}
+		}else {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-
-		return new ResponseEntity<String>(user.toString(), HttpStatus.OK);
+		
+		return new ResponseEntity<CloudComputingDBUser>(dbUser, HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody final SignupForm form) {
-
+	public ResponseEntity<CloudComputingDBUser> create(@RequestBody final SignupForm form) {
+		
+		if(form.getFirst_name().equals("") ||
+				form.getLast_name().equals("") ||
+				form.getPassword().equals("") ||
+				form.getUsername().equals("") ) {
+			
+			return ResponseEntity.badRequest().build();
+		}
+		
 		Pattern pattern = Pattern.compile(regex);
 		boolean match = pattern.matcher(form.getUsername()).matches();
 
-		if (!match) {
+		if (!match || cloudComputingUserService.getUser(form.getUsername()) != null) {
 
-			return new ResponseEntity<String>("Invalid username", HttpStatus.BAD_REQUEST);
+			return ResponseEntity.badRequest().build();
 		}
 
-		String user = cloudComputingUserService.register(form).toString();
+		CloudComputingDBUser user = cloudComputingUserService.register(form);
 
-		return new ResponseEntity<String>(user, HttpStatus.CREATED);
+		return new ResponseEntity<CloudComputingDBUser>(user, HttpStatus.CREATED);
 	}
+	
+	/*@PutMapping("{id}")
+	public ResponseEntity<CloudComputingDBUser> update(@PathVariable Long id, @RequestBody final SignupForm user) {
 
-	@PutMapping("{id}")
-	public ResponseEntity<String> update(@RequestBody CloudComputingDBUser user, @PathVariable Long id,
-			HttpServletRequest request) {
-
-		if (request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Basic ")) {
-
-			return new ResponseEntity<String>("You need to login first!", HttpStatus.UNAUTHORIZED);
+		System.out.println("INSIDE");
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(auth == null) {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-
-		String encodedValue = request.getHeader("Authorization").replace("Basic ", "");
-		String decodedValue = new String(Base64Utils.decodeFromString(encodedValue));
-
-		String username = decodedValue.substring(0, decodedValue.lastIndexOf(":"));
-		CloudComputingDBUser ccUser = cloudComputingUserService.getUser(username);
-
-		if (ccUser == null || !ccUser.getId().equals(id)) {
-
-			return new ResponseEntity<String>("You CAN'T UPDATE details of other users!", HttpStatus.FORBIDDEN);
+		
+		Object principal = auth.getPrincipal();
+		CloudComputingDBUser dbUser = null;
+		
+		if (principal instanceof UserDetails) {
+			
+			String username = ((UserDetails) principal).getUsername();
+			dbUser = cloudComputingUserService.getUser(username);
+			
+			if (dbUser == null) {
+				
+				return ResponseEntity.notFound().build();
+				
+			}else if( !dbUser.getUser_id().equals(id) ) {
+				
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			}
+		}else {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
+		
+		dbUser = cloudComputingUserService.updateUser(user, dbUser);
+		
+		return new ResponseEntity<CloudComputingDBUser>(dbUser, HttpStatus.OK);*/
 
-		if (user == null || (user.getFirst_name().equals("") && user.getLast_name().equals("")
-				&& user.getPassword().equals("") && user.getUsername().equals(""))) {
-
-			return new ResponseEntity<String>("You need to provide atleast 1 field!", HttpStatus.NO_CONTENT);
-		}
-
-		if (!user.getUsername().equals("")) {
-
-			return new ResponseEntity<String>("Cant update username", HttpStatus.BAD_REQUEST);
-		}
-
-		return new ResponseEntity<String>(cloudComputingUserService.updateUser(user, id).toString(),
-				HttpStatus.BAD_REQUEST);
 	}
 }
