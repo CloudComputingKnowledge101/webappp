@@ -22,60 +22,59 @@ import com.example.demo.services.CloudComputingUserService;
 
 @RestController
 @RequestMapping("/v1/user")
+
 public class UserController {
 
 	private String regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
 	@Autowired
 	private CloudComputingUserService cloudComputingUserService;
-	
+
 	@GetMapping("{id}")
 	public ResponseEntity<CloudComputingDBUser> read(@PathVariable Long id) {
-		
+
 		System.out.println("INSIDE");
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if(auth == null) {
-			
+
+		if (auth == null) {
+
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		
+
 		Object principal = auth.getPrincipal();
 		CloudComputingDBUser dbUser = null;
-		
+
 		if (principal instanceof UserDetails) {
-			
+
 			String username = ((UserDetails) principal).getUsername();
 			dbUser = cloudComputingUserService.getUser(username);
-			
+
 			if (dbUser == null) {
-				
+
 				return ResponseEntity.notFound().build();
-				
-			}else if( !dbUser.getUser_id().equals(id) ) {
-				
+
+			} else if (!dbUser.getUser_id().equals(id)) {
+
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 			}
-		}else {
-			
+		} else {
+
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		
+
 		return new ResponseEntity<CloudComputingDBUser>(dbUser, HttpStatus.OK);
 	}
 
 	@PostMapping
 	public ResponseEntity<CloudComputingDBUser> create(@RequestBody final SignupForm form) {
-		
-		if(form.getFirst_name().equals("") ||
-				form.getLast_name().equals("") ||
-				form.getPassword().equals("") ||
-				form.getUsername().equals("") ) {
-			
+
+		if (form.getFirst_name().equals("") || form.getLast_name().equals("") || form.getPassword().equals("")
+				|| form.getUsername().equals("")) {
+
 			return ResponseEntity.badRequest().build();
 		}
-		
+
 		Pattern pattern = Pattern.compile(regex);
 		boolean match = pattern.matcher(form.getUsername()).matches();
 
@@ -88,43 +87,43 @@ public class UserController {
 
 		return new ResponseEntity<CloudComputingDBUser>(user, HttpStatus.CREATED);
 	}
-	
-	/*@PutMapping("{id}")
+
+	@PutMapping("{id}")
 	public ResponseEntity<CloudComputingDBUser> update(@PathVariable Long id, @RequestBody final SignupForm user) {
 
 		System.out.println("INSIDE");
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if(auth == null) {
-			
+
+		if (auth == null) {
+
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		
+
 		Object principal = auth.getPrincipal();
 		CloudComputingDBUser dbUser = null;
-		
+
 		if (principal instanceof UserDetails) {
-			
+
 			String username = ((UserDetails) principal).getUsername();
 			dbUser = cloudComputingUserService.getUser(username);
-			
+
 			if (dbUser == null) {
-				
+
 				return ResponseEntity.notFound().build();
-				
-			}else if( !dbUser.getUser_id().equals(id) ) {
-				
+
+			} else if (!dbUser.getUser_id().equals(id)) {
+
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 			}
-		}else {
-			
+		} else {
+
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		
+
 		dbUser = cloudComputingUserService.updateUser(user, dbUser);
-		
-		return new ResponseEntity<CloudComputingDBUser>(dbUser, HttpStatus.OK);*/
+
+		return new ResponseEntity<CloudComputingDBUser>(dbUser, HttpStatus.OK);
 
 	}
 }

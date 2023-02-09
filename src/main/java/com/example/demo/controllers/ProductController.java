@@ -93,7 +93,7 @@ public class ProductController {
 	}
 	
 
-	/*@PutMapping("{id}")
+	@PutMapping("{id}")
 	public ResponseEntity<CloudComputingDBProduct> update(@PathVariable Long id, @RequestBody ProductForm form,
 			HttpServletRequest request) {
 		
@@ -152,8 +152,7 @@ public class ProductController {
 		dbProduct = cloudComputingProductService.updateProduct(form, dbProduct);
 		
 		return new ResponseEntity<CloudComputingDBProduct>(dbProduct, HttpStatus.OK);
-	}*/
-/*
+	}
 
 	@DeleteMapping("{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
@@ -192,5 +191,5 @@ public class ProductController {
 		}
 		
 		return new ResponseEntity<String>(cloudComputingProductService.delete(id), HttpStatus.OK);
-	}*/
+	}
 }
