@@ -89,7 +89,7 @@ public class UserController {
 		return new ResponseEntity<CloudComputingDBUser>(user, HttpStatus.CREATED);
 	}
 	
-	/*@PutMapping("{id}")
+	@PutMapping("{id}")
 	public ResponseEntity<CloudComputingDBUser> update(@PathVariable Long id, @RequestBody final SignupForm user) {
 
 		System.out.println("INSIDE");
@@ -124,7 +124,7 @@ public class UserController {
 		
 		dbUser = cloudComputingUserService.updateUser(user, dbUser);
 		
-		return new ResponseEntity<CloudComputingDBUser>(dbUser, HttpStatus.OK);*/
+		return new ResponseEntity<CloudComputingDBUser>(dbUser, HttpStatus.OK);
 
 	}
 }
