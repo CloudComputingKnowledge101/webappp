@@ -154,7 +154,6 @@ public class ProductController {
 		return new ResponseEntity<CloudComputingDBProduct>(dbProduct, HttpStatus.OK);
 	}
 
-
 	@DeleteMapping("{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		
