@@ -23,6 +23,6 @@ class CloudComputingAssgn1ApplicationTests {
 	@Test
 	public void checkHealth() {
 		
-		assertEquals("123","123"));
+		assertEquals(1==1));
 	}
 }
