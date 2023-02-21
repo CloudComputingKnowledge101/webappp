@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,12 +66,12 @@ public class ProductController {
 						form.getDescription().equals("") ||
 						form.getManufacturer().equals("") ||
 						form.getSku().equals("") ||
-						form.getQuantity().equals("")) {
+						form.getQuantity() == 0) {
 					
 					return ResponseEntity.badRequest().build();
 				}
 				
-				if( Integer.parseInt(form.getQuantity()) < 0) {
+				if( (form.getQuantity()) < 0) {
 					
 					return ResponseEntity.badRequest().build();
 				}
@@ -130,6 +131,66 @@ public class ProductController {
 						dbProduct.getDescription().equals("") ||
 						dbProduct.getManufacturer().equals("") ||
 						dbProduct.getSku().equals("") ||
+						dbProduct.getQuantity() == 0 ) {
+				
+				return ResponseEntity.badRequest().build();
+			}
+			
+			if( (form.getQuantity()) < 0) {
+				
+				return ResponseEntity.badRequest().build();
+			}
+			
+			if(cloudComputingProductService.fetchBySku(form.getSku()) != null) {
+				
+				return ResponseEntity.badRequest().build();
+			}
+		}else {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
+		dbProduct = cloudComputingProductService.updateProduct(form, dbProduct);
+		
+		return new ResponseEntity<CloudComputingDBProduct>(dbProduct, HttpStatus.OK);
+	}
+	/*@PatchMapping ("{id}")
+	public ResponseEntity<CloudComputingDBProduct> update1(@PathVariable Long id, @RequestBody ProductForm form,
+			HttpServletRequest request) {
+		
+		System.out.println("INSIDE");
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(auth == null) {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
+		Object principal = auth.getPrincipal();
+		CloudComputingDBUser dbUser = null;
+		CloudComputingDBProduct dbProduct = null;
+		
+		if (principal instanceof UserDetails) {
+			
+			String username = ((UserDetails) principal).getUsername();
+			dbUser = cloudComputingUserService.getUser(username);
+			dbProduct = cloudComputingProductService.getProduct(id);
+			
+			if (dbUser == null || dbProduct == null ) {
+				
+				return ResponseEntity.notFound().build();
+			}
+			
+			if( !dbProduct.getOwner().getUser_id().equals(dbUser.getUser_id()) ) {
+				
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			}
+			
+			if( dbProduct.getName().equals("") ||
+						dbProduct.getDescription().equals("") ||
+						dbProduct.getManufacturer().equals("") ||
+						dbProduct.getSku().equals("") ||
 						dbProduct.getQuantity().equals("") ) {
 				
 				return ResponseEntity.badRequest().build();
@@ -141,6 +202,56 @@ public class ProductController {
 			}
 			
 			if(cloudComputingProductService.fetchBySku(form.getSku()) != null) {
+				
+				return ResponseEntity.badRequest().build();
+			}
+		}else {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
+		dbProduct = cloudComputingProductService.updateProduct(form, dbProduct);
+		
+		return new ResponseEntity<CloudComputingDBProduct>(dbProduct, HttpStatus.OK);
+	}*/
+	@PatchMapping("{id}")
+	public ResponseEntity<CloudComputingDBProduct> update1(@PathVariable Long id, @RequestBody ProductForm form,
+	HttpServletRequest request) {
+		System.out.println("INSIDE");
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(auth == null) {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
+		Object principal = auth.getPrincipal();
+		CloudComputingDBUser dbUser = null;
+		CloudComputingDBProduct dbProduct = null;
+		
+		if (principal instanceof UserDetails) {
+			
+			String username = ((UserDetails) principal).getUsername();
+			dbUser = cloudComputingUserService.getUser(username);
+			dbProduct = cloudComputingProductService.getProduct(id);
+			
+			if (dbUser == null || dbProduct == null ) {
+				
+				return ResponseEntity.notFound().build();
+			}
+			
+			if( !dbProduct.getOwner().getUser_id().equals(dbUser.getUser_id()) ) {
+				
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			}
+			
+			if( form.getQuantity() != 0 && (form.getQuantity()) < 0) {
+				
+				return ResponseEntity.badRequest().build();
+			}
+			
+			if(form.getSku() != null && cloudComputingProductService.fetchBySku(form.getSku()) != null) {
 				
 				return ResponseEntity.badRequest().build();
 			}
@@ -190,6 +301,6 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		
-		return new ResponseEntity<String>(cloudComputingProductService.delete(id), HttpStatus.OK);
+		return new ResponseEntity<String>(cloudComputingProductService.delete(id), HttpStatus.NO_CONTENT);
 	}
 }

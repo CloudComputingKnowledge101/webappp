@@ -67,7 +67,7 @@ public class CloudComputingProductService {
 			existing.setDescription(product.getDescription());
 		}
 		
-		if (!product.getQuantity().equals(existing.getQuantity())) {
+		if (product.getQuantity() != (existing.getQuantity())) {
 
 			existing.setQuantity(product.getQuantity());
 		}
