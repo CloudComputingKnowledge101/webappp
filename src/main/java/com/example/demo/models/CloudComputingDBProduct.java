@@ -37,7 +37,7 @@ public class CloudComputingDBProduct implements Serializable {
 	private String manufacturer;
 
 	@Column(name = "quantity")
-	private String quantity;
+	private int quantity;
 
 	@Column(name = "date_added")
 	private String date_added;
@@ -54,7 +54,7 @@ public class CloudComputingDBProduct implements Serializable {
 	}
 
 	public CloudComputingDBProduct(Long product_id, String name, String description, String sku, String manufacturer,
-			String quantity, String date_added, String date_last_updated, CloudComputingDBUser owner) {
+			int quantity, String date_added, String date_last_updated, CloudComputingDBUser owner) {
 		super();
 		this.product_id = product_id;
 		this.name = name;
@@ -107,11 +107,11 @@ public class CloudComputingDBProduct implements Serializable {
 		this.manufacturer = manufacturer;
 	}
 
-	public String getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(String quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 

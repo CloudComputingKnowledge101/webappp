@@ -12,13 +12,13 @@ public class ProductForm implements Serializable {
 
 	private String manufacturer;
 
-	private String quantity;
+	private int quantity;
 	
 	public ProductForm() {
 		
 	}
 	
-	public ProductForm(String name, String description, String sku, String manufacturer, String quantity) {
+	public ProductForm(String name, String description, String sku, String manufacturer, int quantity) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -59,11 +59,11 @@ public class ProductForm implements Serializable {
 		this.manufacturer = manufacturer;
 	}
 
-	public String getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(String quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 }
