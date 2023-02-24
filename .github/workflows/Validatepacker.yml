@@ -6,7 +6,9 @@ on:
 jobs:
   build:
     name: packer workflow
-    runs-on: ubuntu-latest
+
+    runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -27,11 +29,13 @@ jobs:
       - name: Run maven test
         run: mvn test
       - run: |
+
           mkdir app_artifact
-          mv *path* app_artifact/*path*
+          mv ./target/cloud-computing-assgn-1-0.0.1-SNAPSHOT.jar ./packer
       - name: Validate Template
         run: |
           cd packer
-          packer init ami.pkr.hcl
-          packer validate ami.pkr.hcl
-          packer build ami.pkr.hcl
+          packer init aws-ubuntu.pkr.hcl
+          packer validate aws-ubuntu.pkr.hcl
+          packer build aws-ubuntu.pkr.hcl
+
