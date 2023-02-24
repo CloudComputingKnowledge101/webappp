@@ -20,7 +20,7 @@ As a default, it is listening at http://localhost:8080/
 #RESTful APIs Implemented are as follows:
 
 GET 
-PUT
+PUTl
 POST
 DELETE
 
