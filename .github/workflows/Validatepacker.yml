@@ -1,6 +1,6 @@
 name: Packer build
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
@@ -9,7 +9,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 8
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -27,8 +27,7 @@ jobs:
       - name: Run maven test
         run: mvn test
       - run: |
-          mkdir app_artifact
-          mv *path* app_artifact/*path*
+          mv ./target/cloud-computing-assgn-1-0.0.1-SNAPSHOT.jar ./packer
       - name: Validate Template
         run: |
           cd packer
