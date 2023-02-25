@@ -1,10 +1,12 @@
 [Unit]
+
 Description=CI/CD assignmnt
+
 After=syslog.target
 
 [Service]
 User=root
-ExecStart=/usr/bin/java -jar home/ec2-user/cloud-computing-assgn-1-0.0.1-SNAPSHOT.jar -DMYSQL_PASSWORD="$MYSQLPWD"
+ExecStart=/usr/bin/java -jar home/ec2-user/cloud-computing-assgn-1-0.0.1-SNAPSHOT.jar
 SuccessExitStatus=143
 Restart=always
 RestartSec=5
