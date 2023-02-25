@@ -62,11 +62,11 @@ public class ProductController {
 
 			if (dbUser != null) {
 				
-				if(form.getName().equals("") ||
-						form.getDescription().equals("") ||
-						form.getManufacturer().equals("") ||
-						form.getSku().equals("") ||
-						form.getQuantity() == 0) {
+				if(form.getName() == null ||
+						form.getDescription() == null ||
+						form.getManufacturer() == null ||
+						form.getSku() == null ||
+						form.getQuantity() <= 0) {
 					
 					return ResponseEntity.badRequest().build();
 				}

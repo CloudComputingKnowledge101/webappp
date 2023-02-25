@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+ package com.example.demo.controllers;
 
 import java.util.regex.Pattern;
 
@@ -69,8 +69,8 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<CloudComputingDBUser> create(@RequestBody final SignupForm form) {
 
-		if (form.getFirst_name().equals("") || form.getLast_name().equals("") || form.getPassword().equals("")
-				|| form.getUsername().equals("")) {
+		if (form.getFirst_name() == null || form.getLast_name() == null || form.getPassword() == null
+				|| form.getUsername() == null) {
 
 			return ResponseEntity.badRequest().build();
 		}
