@@ -1,5 +1,5 @@
 [Unit]
-Description=CI/CD Assignment
+Description=CI/CD assignment
 After=syslog.target
 
 [Service]
