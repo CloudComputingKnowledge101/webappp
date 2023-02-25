@@ -35,7 +35,7 @@ jobs:
       - name: Validate Template
         run: |
           cd packer
-          packer init aws-ubuntu.pkr.hcl
+          packer init 
           packer validate aws-ubuntu.pkr.hcl
           packer build aws-ubuntu.pkr.hcl
 
