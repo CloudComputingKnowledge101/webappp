@@ -49,5 +49,5 @@ build {
 
   provisioner "shell" {
     inline = ["echo '****** Moving amiservice! *******'", "sudo cp /tmp/ami.service /etc/systemd/system", "sudo chmod 755 /etc/systemd/system/ami.service", "sudo systemctl start ami.service", "sudo systemctl enable ami.service", "echo '****** Copied amiservice! *******'"]
-  
+  }
 }
