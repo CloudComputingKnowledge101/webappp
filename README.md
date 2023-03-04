@@ -22,7 +22,7 @@ As a default, it is listening at http://localhost:8080/
 GET 
 PUTl
 POST
-DELETE1
+DELETE
 
 
 https://spring.io/guides/tutorials/rest/
