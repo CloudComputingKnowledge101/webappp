@@ -1,10 +1,6 @@
 [Unit]
-<<<<<<< HEAD
+
 Description=CI/CD Assignment
-=======
-Description=CI/CD assignmnt
->>>>>>> 8c04965 (merge conflict)
-After=syslog.target
 
 [Service]
 User=root
