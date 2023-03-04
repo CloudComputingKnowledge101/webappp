@@ -40,12 +40,12 @@ build {
   }
 
   provisioner "shell" {
-    inline = ["sleep 30", "sudo yum update -y", "sudo yum -y install java-17", "echo 'Install epel'", "sudo amazon-linux-extras install epel", "sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y", "sudo yum install mysql-community-server -y", "sudo systemctl start mysqld.service", "sleep 30"]
+    inline = ["sleep 30", "sudo yum update -y", "sudo yum -y install java-17", "echo 'Install epel'", "sudo amazon-linux-extras install epel", "sleep 30"]
   }
 
-  provisioner "shell" {
+  /*provisioner "shell" {
     inline = ["MYSQLPWD=`sudo grep 'temporary password' /var/log/mysqld.log | awk 'NF{ print $NF }'`", "echo $MYSQLPWD", "mysql -uroot --password=$MYSQLPWD --connect-expired-password -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'rootPass@123\\!';\"", "mysql -uroot --password=rootPass@123! -e \"CREATE DATABASE IF NOT EXISTS cloudcomputing\""]
-  }
+  }*/
 
   provisioner "shell" {
     inline = ["echo '****** Moving amiservice! *******'", "sudo cp /tmp/ami.service /etc/systemd/system", "sudo chmod 755 /etc/systemd/system/ami.service", "sudo systemctl start ami.service", "sudo systemctl enable ami.service", "echo '****** Copied amiservice! *******'"]
