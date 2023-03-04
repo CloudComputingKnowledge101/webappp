@@ -1,4 +1,4 @@
-# webappp - cloud
+# webappp
 # Prequisites to build this webapp
 
 install java version 17
@@ -22,7 +22,7 @@ As a default, it is listening at http://localhost:8080/
 GET 
 PUTl
 POST
-DELETE
+DELETE1
 
 
 https://spring.io/guides/tutorials/rest/
