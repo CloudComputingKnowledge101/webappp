@@ -1,10 +1,12 @@
 package com.example.demo.models;
 
 import java.io.Serializable;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -49,12 +52,17 @@ public class CloudComputingDBProduct implements Serializable {
 	//@JsonBackReference
 	@JoinColumn(name = "owner", referencedColumnName = "user_id", nullable=false)
 	private CloudComputingDBUser owner;
+	
+	@JsonIgnore
+	@OneToMany(cascade=CascadeType.ALL, mappedBy = "image_id")
+	private List<CloudComputingDBImage> images;
 
 	public CloudComputingDBProduct() {
 	}
 
 	public CloudComputingDBProduct(Long product_id, String name, String description, String sku, String manufacturer,
-			int quantity, String date_added, String date_last_updated, CloudComputingDBUser owner) {
+			int quantity, String date_added, String date_last_updated, CloudComputingDBUser owner,
+			List<CloudComputingDBImage> images) {
 		super();
 		this.product_id = product_id;
 		this.name = name;
@@ -65,6 +73,7 @@ public class CloudComputingDBProduct implements Serializable {
 		this.date_added = date_added;
 		this.date_last_updated = date_last_updated;
 		this.owner = owner;
+		this.images = images;
 	}
 
 	public Long getProduct_id() {
@@ -137,5 +146,13 @@ public class CloudComputingDBProduct implements Serializable {
 
 	public void setOwner(CloudComputingDBUser owner) {
 		this.owner = owner;
+	}
+
+	public List<CloudComputingDBImage> getImages() {
+		return images;
+	}
+
+	public void setImages(List<CloudComputingDBImage> images) {
+		this.images = images;
 	}
 }
