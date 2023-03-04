@@ -4,21 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.aspectj.weaver.patterns.HasMemberTypePatternForPerThisMatching;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.controllers.AppHealthController;
 import com.example.demo.daos.SignupForm;
 import com.example.demo.models.CloudComputingDBUser;
 import com.example.demo.repositories.UserRepository;
 
 @Service
 public class CloudComputingUserService {
-	private static final Logger LOG = LogManager.getLogger(CloudComputingUserService.class);
 
 	@Autowired
 	private UserRepository repository;
@@ -27,10 +22,8 @@ public class CloudComputingUserService {
 	private PasswordEncoder encoder;
 
 	public CloudComputingDBUser register(SignupForm form) {
-		
-        
+
 		System.out.println("Mapping user details database object ....");
-		LOG.info("###########__Mapping user details database object __#############"+ "\tClassname: " + this.getClass().getName() + "\tMethod Name: register");
 
 		CloudComputingDBUser user = new CloudComputingDBUser();
 		user.setUsername(form.getUsername());
@@ -44,8 +37,6 @@ public class CloudComputingUserService {
 		user.setAccount_updated(timeStamp);
 
 		System.out.println("Database object created ....");
-		LOG.info("###########__ Database object created__#############"+ "\tClassname: " + this.getClass().getName() + "\tMethod Name: register");
-		
 
 		/*
 		 * Authority authority = new Authority() ; authority.setAuthority( "USER" );
@@ -59,12 +50,12 @@ public class CloudComputingUserService {
 
 		repository.saveAndFlush(user);
 		// authRepository.saveAndFlush( authority ) ;
-         
+
 		return user;
 	}
 
 	public CloudComputingDBUser getUser(Long id) {
-		LOG.info("###########__USER FOUND__############# "+ "\tClassname: " + this.getClass().getName() + "\tMethod Name: getUser");
+
 		return repository.getReferenceById(id);
 	}
 
@@ -75,7 +66,7 @@ public class CloudComputingUserService {
 		if (!user.isPresent()) {
 			return null;
 		}
-		
+
 		return user.get();
 	}
 
@@ -100,8 +91,7 @@ public class CloudComputingUserService {
 			existing.setPassword(encoder.encode(user.getPassword()));
 			existing.setAccount_updated(timeStamp);
 		}
-		
-		LOG.info("###########__USER UPDATED__#############" + "\tClassname: " + this.getClass().getName() + "\tMethod Name: updateUser");
+
 		return repository.saveAndFlush(existing);
 	}
 }

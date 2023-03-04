@@ -1,8 +1,5 @@
 package com.example.demo.models;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -35,7 +32,6 @@ public class CloudComputingDBImage {
 
 	@ManyToOne
 	@JoinColumn(name = "product", referencedColumnName = "product_id", nullable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private CloudComputingDBProduct product;
 	
 	public CloudComputingDBImage() {}
