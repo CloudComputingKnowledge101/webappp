@@ -52,8 +52,8 @@ public class S3FileTransferService {
 		this.s3client = S3Client.builder().credentialsProvider(InstanceProfileCredentialsProvider.builder().build())
 				.region(Region.US_WEST_2).build();
 		// this.s3BucketName = randomBucketNameGeneration(random);
-		createBucket();
-
+		//createBucket();
+		System.out.println("this is s3 bucket name "+ this.s3BucketName);
 		System.out.println("S3 CLIENT: " + this.s3client.toString());
 	}
 
