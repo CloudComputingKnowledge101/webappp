@@ -43,6 +43,14 @@ build {
     inline = ["sleep 30", "sudo yum update -y", "sudo yum -y install java-17", "echo 'Install epel'", "sudo amazon-linux-extras install epel", "sleep 30"]
   }
 
+ provisioner "shell" {
+    inline = ["sleep 30", "sudo yum install wget -y"," wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm", "sudo yum install amazon-cloudwatch-agent", "sudo rpm -U ./amazon-cloudwatch-agent.rpm", "echo 'Installed cloudwatch'", "sleep 30"]
+  }
+
+ provisioner "shell" {
+    inline = ["sleep 30", "sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/home/ec2-user/webservice/statsd/config.json -s" , "sleep 30"]
+  }
+
   /*provisioner "shell" {
     inline = ["MYSQLPWD=`sudo grep 'temporary password' /var/log/mysqld.log | awk 'NF{ print $NF }'`", "echo $MYSQLPWD", "mysql -uroot --password=$MYSQLPWD --connect-expired-password -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'rootPass@123\\!';\"", "mysql -uroot --password=rootPass@123! -e \"CREATE DATABASE IF NOT EXISTS cloudcomputing\""]
   }*/
