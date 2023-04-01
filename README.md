@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # webappp
 # Prequisites to build this webapp
 
@@ -16,7 +15,7 @@ use maven to build the project using $ mvn clean install
 this server will run at http://localhost:8080/, test can be done using Postman.
 MySQL port is default 3306.
 Server: server side as RESTful architectural style. 
-As a default, it is listening at http://localhost:8080/ .
+As a default, it is listening at http://localhost:8080/
 
 #RESTful APIs Implemented are as follows:
 
@@ -27,6 +26,3 @@ DELETE1
 
 
 https://spring.io/guides/tutorials/rest/
-=======
-# webappp
->>>>>>> parent of 48b080f (resolving commit)
