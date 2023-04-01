@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # webappp
 # Prequisites to build this webapp
 
@@ -26,3 +27,6 @@ DELETE1
 
 
 https://spring.io/guides/tutorials/rest/
+=======
+# webappp
+>>>>>>> parent of 48b080f (resolving commit)
