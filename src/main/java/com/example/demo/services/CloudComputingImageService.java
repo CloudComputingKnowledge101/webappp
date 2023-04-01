@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import com.example.demo.repositories.ImageRepository;
 
 @Service
 public class CloudComputingImageService {
+	private static final Logger LOG = LogManager.getLogger(CloudComputingImageService.class);
 
 	@Autowired
 	private ImageRepository repository;
@@ -36,6 +39,7 @@ public class CloudComputingImageService {
 		}
 
 		System.out.println("IMAGE NAME: " + imageNAMEandURL.get(0) + " URL: " + imageNAMEandURL.get(1));
+		LOG.info("###########__ GETTING IMAGE NAME AND URL_#############"+ "\tClassname: " + this.getClass().getName() + "\tMethod Name: register");
 
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
@@ -46,6 +50,7 @@ public class CloudComputingImageService {
 		image.setS3_bucket_path(imageNAMEandURL.get(1));
 
 		System.out.println("Product Image metadata stored in database ....");
+		LOG.info("######## PRODUCT IMAGE METADATA STORED IN DB #############"+ "\tClassname: " + this.getClass().getName() + "\tMethod Name:register" );
 
 		return repository.saveAndFlush(image);
 	}
@@ -58,7 +63,7 @@ public class CloudComputingImageService {
 
 			return null;
 		}
-
+		LOG.info("###########__GETTING IMAGE_#############"+ "\tClassname: " + this.getClass().getName() + "\tMethod Name:getImage");
 		return dbImage.get();
 	}
 
@@ -70,7 +75,7 @@ public class CloudComputingImageService {
 		s3FileTransferService.deleteObject(bucketName, imageName);
 		
 		repository.deleteById(id);
-
+		LOG.info("###########__IMAGE DELETED__#############"+ "\tClassname: " + this.getClass().getName() + "\tMethod Name: delete");
 		return "Image deleted";
 	}
 }

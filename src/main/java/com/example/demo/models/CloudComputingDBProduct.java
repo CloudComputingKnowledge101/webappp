@@ -3,6 +3,9 @@ package com.example.demo.models;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -51,6 +54,7 @@ public class CloudComputingDBProduct implements Serializable {
 	@ManyToOne
 	//@JsonBackReference
 	@JoinColumn(name = "owner", referencedColumnName = "user_id", nullable=false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private CloudComputingDBUser owner;
 	
 	@JsonIgnore
