@@ -21,6 +21,6 @@ jobs:
         id: init
         run: "packer init aws.ubuntu.pkr.hcl"
 
-      - name: Run `packer validate`
+      - name: Run `packer validate packer`
         id: validate
         run: "packer validate aws.ubuntu.pkr.hcl"
