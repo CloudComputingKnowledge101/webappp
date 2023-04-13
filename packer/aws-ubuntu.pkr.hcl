@@ -8,7 +8,7 @@ packer {
 }
 
 source "amazon-ebs" "amazonlinux" {
-  ami_name      = "13032309-learn-packer-linux-aws-V1"
+  ami_name      = "13032309-learn-packer-linux-aws_{{timestamp}}"
   instance_type = "t2.micro"
   region        = "us-west-2"
   profile       = "dev"
@@ -68,6 +68,10 @@ build {
 
   provisioner "shell" {
     inline = ["echo '****** Moving amiservice! *******'", "sudo cp /tmp/ami.service /etc/systemd/system", "sudo chmod 755 /etc/systemd/system/ami.service", "sudo systemctl start ami.service", "sudo systemctl enable ami.service", "echo '****** Copied amiservice! *******'"]
+  }
+
+  provisioner "shell" {
+    inline = ["sleep 30","curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"", "sudo cp /tmp/ami.service /etc/systemd/system", "sudo chmod 755 /etc/systemd/system/ami.service", "sudo systemctl start ami.service", "sudo systemctl enable ami.service", "echo '****** Copied amiservice! *******'"]
   }
   post-processor "manifest" {
     output = "manifest.json"
