@@ -8,7 +8,7 @@ packer {
 }
 
 source "amazon-ebs" "amazonlinux" {
-  ami_name      = "13032309-learn-packer-linux-aws"
+  ami_name      = "13032309-learn-packer-linux-aws-V1"
   instance_type = "t2.micro"
   region        = "us-west-2"
   profile       = "dev"
