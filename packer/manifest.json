@@ -3,12 +3,12 @@
     {
       "name": "amazonlinux",
       "builder_type": "amazon-ebs",
-      "build_time": 1681377462,
+      "build_time": 1681374319,
       "files": null,
-      "artifact_id": "us-west-2:ami-0b677cc9403d504c1",
-      "packer_run_uuid": "5eb17e64-6a91-91b3-2ed0-4349d15c1b79",
+      "artifact_id": "us-west-2:ami-0a1fd39136363bf5e",
+      "packer_run_uuid": "96b9fa94-0070-8c7d-7b66-ccb425f97386",
       "custom_data": null
     }
   ],
-  "last_run_uuid": "5eb17e64-6a91-91b3-2ed0-4349d15c1b79"
+  "last_run_uuid": "96b9fa94-0070-8c7d-7b66-ccb425f97386"
 }
