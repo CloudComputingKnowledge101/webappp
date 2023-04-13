@@ -37,3 +37,26 @@ jobs:
           packer init aws-ubuntu.pkr.hcl
           packer validate aws-ubuntu.pkr.hcl
           packer build aws-ubuntu.pkr.hcl
+          - name: Install AWS CLI
+      - name: Install AWS CLI   
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install --update
+          
+      - name: Create new Launch Template version
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEMO_AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-west-2
+        run: |
+          AMI_ID=$(cat manifest.json | jq -r '.builds[-1].artifact_id' | cut -d ":" -f2)
+          aws ec2 create-launch-template-version --debug --launch-template-id xxxxx --launch-template-data "{\"ImageId\":\"$AMI_ID\",\"InstanceType\":\"t2.micro\"}"
+
+      - name: Refresh instances in Auto Scaling group
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEMO_AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-west-2
+        run: |
+          aws autoscaling start-instance-refresh --auto-scaling-group-name asg-launch-config
