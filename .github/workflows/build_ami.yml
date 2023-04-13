@@ -49,8 +49,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.DEMO_AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-west-2
         run: |
-          AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
-          echo $AMI_ID
+          AMI_ID=$(cat manifest.json | jq -r '.builds[-1].artifact_id' | cut -d ":" -f2)
           LT_ID=$(aws ec2 describe-launch-templates --launch-template-name asg-launch-config20230411162909263500000002 | jq '.LaunchTemplates[].LaunchTemplateId')
           LT_ID="${LT_ID%\"}"
           LT_ID="${LT_ID#\"}"
