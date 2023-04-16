@@ -21,6 +21,5 @@ jobs:
         id: init
         run: |
           cd packer
-          packer init aws-ubuntu.pkr.hcl
           packer validate aws-ubuntu.pkr.hcl
         
