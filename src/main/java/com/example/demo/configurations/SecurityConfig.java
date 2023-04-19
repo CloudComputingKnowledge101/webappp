@@ -29,18 +29,18 @@ public class SecurityConfig {
 	
 	/*@Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(HttpMethod.POST, "/v1/user")
+        return (web) -> web.ignoring().requestMatchers(HttpMethod.POST, "/v2/user")
         								.requestMatchers(HttpMethod.GET, "/healthz")
-        								.requestMatchers(HttpMethod.GET, "/v1/product/*");
+        								.requestMatchers(HttpMethod.GET, "/v2/product/*");
     }*/
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		http.authorizeHttpRequests()
-		.requestMatchers(HttpMethod.POST, "/v1/user").permitAll()
+		.requestMatchers(HttpMethod.POST, "/v2/user").permitAll()
 		.requestMatchers(HttpMethod.GET, "/healthz").permitAll()
-		.requestMatchers(HttpMethod.GET, "/v1/product/*").permitAll()
+		.requestMatchers(HttpMethod.GET, "/v2/product/*").permitAll()
         .anyRequest().authenticated()
         .and()
         .httpBasic()
