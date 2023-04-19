@@ -34,7 +34,7 @@ import com.timgroup.statsd.StatsDClient;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/v1/product")
+@RequestMapping("/v2/product")
 public class ProductController {
 	
 	private static final Logger LOG = LogManager.getLogger(ProductController.class);
@@ -59,12 +59,12 @@ public class ProductController {
 
 		if (product == null) {
             
-			LOG.error("###########__PRODUCT_ID_NOT_FOUND_(GET./V1/Product/{ProductID})__ #############");
+			LOG.error("###########__PRODUCT_ID_NOT_FOUND_(GET./V2/Product/{ProductID})__ #############");
 			return ResponseEntity.notFound().build();
 			
 		}
 		
-		statsDClient.incrementCounter("counts_api_call_GET.v1/product/{ProductID}");
+		statsDClient.incrementCounter("counts_api_call_GET.v2/product/{ProductID}");
 		LOG.info("###########___PRODUCT_FOUND__#############");
 		return new ResponseEntity<CloudComputingDBProduct>(product, HttpStatus.OK);
 	}
