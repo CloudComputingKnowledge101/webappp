@@ -24,7 +24,7 @@ import com.example.demo.services.CloudComputingUserService;
 import com.timgroup.statsd.StatsDClient;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v2/user")
 
 public class UserController {
 	private static final Logger LOG = LogManager.getLogger(UserController.class);
