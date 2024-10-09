@@ -12,11 +12,11 @@ source "amazon-ebs" "amazonlinux" {
   instance_type = "t2.micro"
   region        = "us-west-2"
   profile       = "dev"
-  source_ami    = "ami-0f1a5f5ada0e7da53"
+  source_ami    = "your-ami"
   access_key    = ""
   secret_key    = ""
   ssh_username  = "ec2-user"
-  ami_users     = ["307582231222"]
+  ami_users     = ["account number"]
   ami_block_device_mappings {
     delete_on_termination = true
     device_name           = "/dev/xvda"
